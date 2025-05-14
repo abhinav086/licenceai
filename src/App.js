@@ -9,7 +9,7 @@ function MistralOCRApp() {
   const [error, setError] = useState('');
 
   const MISTRAL_API_KEY = '3Qti3h1R9S5DwzGIQun8f0wspDPmt4fz';
-  const MISTRAL_API_URL = 'https://api.mistral.ai/v1/chat/completions ';
+  const MISTRAL_API_URL = 'https://api.mistral.ai/v1/chat/completions';
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -66,8 +66,10 @@ function MistralOCRApp() {
       const data = await response.json();
 
       if (response.ok) {
-        const extractedText = data.choices[0].message.content.trim();
-        setResult(extractedText);
+        const fullText = data.choices[0].message.content.trim();
+        const match = fullText.match(/[A-Z]{2}\d{2}[A-Z]{1,2}\d{4}/i); // Extracts license plate
+        const plateNumber = match ? match[0].toUpperCase() : 'No plate number found';
+        setResult(plateNumber);
       } else {
         setError(data.error?.message || 'Failed to process image.');
       }
@@ -89,7 +91,7 @@ function MistralOCRApp() {
   return (
     <div className="ocr-container">
       <div className="ocr-card">
-        <h1 className="title">License Plate Extraction (AI)- BT 41033 <br></br> ABHINAV & AAROHI</h1>
+        <h1 className="title">License Plate Extraction (AI)- BT 41033 <br /> ABHINAV & AAROHI</h1>
         
         <form onSubmit={handleSubmit} className="upload-form">
           <div className="file-upload">
@@ -134,6 +136,19 @@ function MistralOCRApp() {
             <div className="result-box">
               <p className="result-text">{result}</p>
             </div>
+          </div>
+        )}
+
+        {result && (
+          <div className="carinfo-link-section">
+            <button
+              className="carinfo-btn"
+              onClick={() =>
+                window.location.href = `https://www.carinfo.app/rc-details/${result.replace(/\s/g, '')}`
+              }
+            >
+              View Details of owner.
+            </button>
           </div>
         )}
 

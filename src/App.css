@@ -167,6 +167,22 @@ body {
   border-radius: 6px;
   padding: 1rem;
 }
+.carinfo-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.carinfo-btn:hover {
+  background-color: #0056b3;
+}
+
 
 .error-text {
   color: #991b1b;
